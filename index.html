@@ -530,8 +530,9 @@
         }
 
         .profile-img {
-            width: 100%;
-            height: 400px;
+            width: 75%;   /* scales the image to 75% of its original size */
+            height: auto; /* keeps aspect ratio */
+            display: block;
             object-fit: cover;
             border-radius: 20px;
             background: var(--card-bg);
@@ -1533,5 +1534,6 @@
 </body>
 
 </html>
+
 
 
