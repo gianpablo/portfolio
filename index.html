@@ -284,26 +284,26 @@
 
         /* Services Section */
         .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 3rem;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-}
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-@media (max-width: 900px) {
-    .services-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
+        @media (max-width: 900px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-@media (max-width: 600px) {
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-}
+        @media (max-width: 600px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
         .service-card {
             background: var(--card-bg);
@@ -374,7 +374,10 @@
             color: var(--text-muted);
         }
 
-        /* Works Section */
+        /* ============================================
+           WORKS SECTION — FIXED FOR MOBILE
+           ============================================ */
+
         .works-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -382,48 +385,78 @@
             margin-top: 3rem;
         }
 
-        .work-item {
-            perspective: 1000px;
-            height: auto;
-            min-height: 400px;
+        @media (max-width: 480px) {
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
+        /* The outer container — no fixed height, no position:relative on the item itself */
+        .work-item {
+            perspective: 1000px;
+        }
+
+        /* The flipper: takes full height of its tallest face */
         .work-card {
             position: relative;
             width: 100%;
-            height: 100%;
             transform-style: preserve-3d;
             transition: transform 0.6s ease;
+            /* Height is driven by the taller of front/back via the ghost spacer */
         }
 
         .work-card.flipped {
             transform: rotateY(180deg);
         }
 
+        /* Both faces sit on top of each other via absolute positioning.
+           A ghost spacer (see below) gives the card its natural height. */
         .work-front,
-	.work-back {
-   	   position: absolute;
-   	   width: 100%;
-    	   min-height: 400px;
-    	   backface-visibility: hidden;
-    	   background: var(--card-bg);
-    	   border: 1px solid var(--border-glow);
-    	   border-radius: 20px;
-    	   backdrop-filter: blur(10px);
-    	   overflow: hidden;
-    	   flex-direction: column;
-	}
-
+        .work-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
         .work-back {
             transform: rotateY(180deg);
-            display: flex;
-            
             padding: 1rem;
         }
 
+        /* Ghost spacer — invisible, in normal flow — keeps the card tall enough */
+        .work-card-spacer {
+            visibility: hidden;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Spacer mirrors front face structure */
+        .work-card-spacer .work-thumbnail {
+            height: 200px;
+            flex-shrink: 0;
+        }
+
+        .work-card-spacer .work-content {
+            padding: 1.5rem;
+            flex: 1;
+        }
+
+        /* ---- Thumbnail ---- */
         .work-thumbnail {
             height: 200px;
+            flex-shrink: 0;
             overflow: hidden;
             background: linear-gradient(45deg, var(--primary-gradient), var(--secondary-gradient));
             display: flex;
@@ -442,26 +475,52 @@
             transform: scale(1.05);
         }
 
+        /* ---- Front content ---- */
         .work-content {
-	    padding: 1.5rem;
-   	    display: flex;
-	    flex-direction: column;
-	}
-
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
 
         .work-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            gap: 0.75rem;
             margin-bottom: 1rem;
         }
 
         .work-header h3 {
             color: var(--text-light);
             margin: 0;
-            font-size: 1.3rem;
+            font-size: 1.15rem;
+            line-height: 1.4;
         }
 
+        .work-content p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ---- Back content ---- */
+        .work-video {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            min-height: 220px;
+        }
+
+        .work-video iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
+        /* ---- Buttons ---- */
         .demo-link {
             color: var(--text-light);
             background: var(--secondary-gradient);
@@ -473,31 +532,13 @@
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .demo-link:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
-        }
-
-        .work-content p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        .work-video {
-            flex: 1;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 1rem;
-        }
-
-        .work-video iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 15px;
         }
 
         .back-button {
@@ -510,12 +551,14 @@
             transition: all 0.3s ease;
             font-size: 0.9rem;
             backdrop-filter: blur(10px);
+            flex-shrink: 0;
         }
 
         .back-button:hover {
             background: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
         }
+
         /* About Section */
         .about-content {
             display: grid;
@@ -547,19 +590,20 @@
         }
 
         .profile-img {
-            width: 75%;   /* scales the image to 75% of its original size */
-            height: auto; /* keeps aspect ratio */
+            width: 75%;
+            height: auto;
             display: block;
             object-fit: cover;
             border-radius: 20px;
             background: var(--card-bg);
             border: 2px solid var(--border-glow);
         }
+
         .profile-img img {
-            width: 100%;    /* fills container */
+            width: 100%;
             height: auto;
-            border: none;   /* remove border */
-            border-radius: 10px; /* optional */
+            border: none;
+            border-radius: 10px;
             display: block;
         }
 
@@ -1029,10 +1073,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .work-item {
-                height: 350px;
-            }
-
             section {
                 padding: 4rem 1rem;
             }
@@ -1152,20 +1192,21 @@
             <div class="skill-card">
                 <div class="skill-icon">🔐</div>
                 <h3>User Authentication & Security</h3>
-                <p>FBuilding secure user management systems with role-based permissions and advanced authentication flows for data protection.</p>
+                <p>Building secure user management systems with role-based permissions and advanced authentication flows for data protection.</p>
             </div>
             <div class="skill-card">
                 <div class="skill-icon">⚡</div>
                 <h3>Performance Optimization</h3>
                 <p>Enhancing database efficiency and loading speeds while implementing scalability solutions for high-traffic applications.</p>
             </div>
-    </div>
+        </div>
     </section>
-    
 
-   <section id="works" class="fade-in">
+    <section id="works" class="fade-in">
         <h2 class="section-title">Works</h2>
         <div class="works-grid">
+
+            <!-- Card with flip -->
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1186,9 +1227,20 @@
                         </div>
                         <button class="back-button" onclick="flipCard(this)">← Back to details</button>
                     </div>
+                    <!-- Ghost spacer keeps card height correct -->
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header">
+                                <h3>AI-Powered Interactive Quiz Generator</h3>
+                            </div>
+                            <p>An intelligent quiz generator built with OpenAI, designed to create dynamic, personalised quizzes in real time. The system uses recursive workflows to handle question-by-question progression, tracks player scores, and delivers instant feedback.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
+            <!-- NDA cards (no flip) -->
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1202,9 +1254,16 @@
                             <p>Interactive educational platform with games, e-books, videos, worksheets, and parental controls.</p>
                         </div>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>Children's Learning Portal (Under NDA)</h3></div>
+                            <p>Interactive educational platform with games, e-books, videos, worksheets, and parental controls.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1218,9 +1277,16 @@
                             <p>Performer-organizer-user connection platform with feedback system and loyalty program.</p>
                         </div>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>Music Performance Platform (Under NDA)</h3></div>
+                            <p>Performer-organizer-user connection platform with feedback system and loyalty program.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1234,9 +1300,16 @@
                             <p>AI-powered homeschooling platform with OpenAI curriculum generation, Stripe payments, and progress tracking.</p>
                         </div>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>AI Lesson Planner (Under NDA)</h3></div>
+                            <p>AI-powered homeschooling platform with OpenAI curriculum generation, Stripe payments, and progress tracking.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1250,9 +1323,16 @@
                             <p>Enhanced film distribution platform with MRSS feeds and mobile payment processing.</p>
                         </div>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>Independent Film Platform (Under NDA)</h3></div>
+                            <p>Enhanced film distribution platform with MRSS feeds and mobile payment processing.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1266,9 +1346,17 @@
                             <p>Discount platform connecting dental practices with patients. Implemented coupon system for service discounts and referral program to drive patient acquisition and retention.</p>
                         </div>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>Dental Services Platform (Under NDA)</h3></div>
+                            <p>Discount platform connecting dental practices with patients. Implemented coupon system for service discounts and referral program to drive patient acquisition and retention.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
+            <!-- Card with flip -->
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1289,9 +1377,17 @@
                         </div>
                         <button class="back-button" onclick="flipCard(this)">← Back to details</button>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>DeliveryWeb</h3></div>
+                            <p>It generates a proposal to clients from a job description. It was integrated an OpenAI API with the system message set (instructions). It consults our case studies and find the most relevant one to present to the client and also follows a pre-determined format.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
+            <!-- Card with flip -->
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1312,9 +1408,16 @@
                         </div>
                         <button class="back-button" onclick="flipCard(this)">← Back to details</button>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>Petinder</h3></div>
+                            <p>Platform of pet adoption in a dating app format. Built the ability to donate to shelters, define requirements for adoption, etc.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1328,9 +1431,16 @@
                             <p>I was responsible for the blog creator feature, blog, detailed blog post, onboarding page for physicians, profiles, etc. Internship for a German startup where I am improving my no-code skills.</p>
                         </div>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>Get2Germany</h3></div>
+                            <p>I was responsible for the blog creator feature, blog, detailed blog post, onboarding page for physicians, profiles, etc. Internship for a German startup where I am improving my no-code skills.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="work-item">
                 <div class="work-card">
                     <div class="work-front">
@@ -1344,10 +1454,19 @@
                             <p>Built a internal system to help them create quotes for clients based on materials and services.</p>
                         </div>
                     </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>Toitures Impex</h3></div>
+                            <p>Built a internal system to help them create quotes for clients based on materials and services.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </section>
+
     <section id="education" class="fade-in">
         <h2 class="section-title">Education & Certifications</h2>
         <div class="education-grid">
@@ -1357,28 +1476,24 @@
                 <p class="edu-period">2008 - 2012</p>
                 <p>Bachelor's Degree</p>
             </div>
-            
             <div class="education-card">
                 <div class="edu-icon">🎒</div>
                 <h3>High School</h3>
                 <p class="edu-period">2005 - 2008</p>
                 <p>Secondary Education</p>
             </div>
-            
             <div class="education-card">
                 <div class="edu-icon">🛠️</div>
                 <h3>Bubble Development</h3>
                 <p class="edu-period">2022 - 2023</p>
                 <p>Advanced Level Course</p>
             </div>
-            
             <div class="education-card">
                 <div class="edu-icon">💬</div>
                 <h3>English Language</h3>
                 <p class="edu-period">WLNC Certificate</p>
                 <p>Advanced Level</p>
             </div>
-            
             <div class="education-card">
                 <div class="edu-icon">🌍</div>
                 <h3>Remote Work</h3>
@@ -1393,6 +1508,7 @@
             </div>
         </div>
     </section>
+
     <section id="contact" class="fade-in">
         <h2 class="section-title">Let's Work Together</h2>
         <div class="contact-info">
@@ -1403,7 +1519,6 @@
                         <h4>Email</h4>
                         <p><a href="mailto:gianpablogps@hotmail.com">gianpablogps@hotmail.com</a></p>
                     </div>
-                    
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon">📞</div>
@@ -1412,24 +1527,23 @@
                         <p><a href="https://api.whatsapp.com/send/?phone=%2B5551995925798&text&type=phone_number&app_absent=0" target="_blank">+55 51 995-925-798</a></p>
                     </div>
                 </div>
-                
                 <div class="contact-item">
                     <div class="contact-icon">💼</div>
                     <div class="contact-details">
                         <h4>LinkedIn</h4>
                         <p><a href="https://linkedin.com/in/gianpablo" target="_blank">linkedin.com/in/gianpablo</a></p>
-                 </div>
+                    </div>
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon">🐙</div>
                     <div class="contact-details">
                         <h4>Github</h4>
                         <p><a href="https://github.com/gianpablo" target="_blank">GitHub</a></p>
-                 </div>
+                    </div>
                 </div>
             </div>
         </div>
-
+    </section>
 
     <script>
         // Smooth scrolling for navigation links
@@ -1437,51 +1551,18 @@
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
         // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -100px 0px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Form submission handling
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Animate submit button
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Sending...';
-            submitBtn.style.background = 'var(--accent-gradient)';
-            
-            // Simulate form submission
-            setTimeout(() => {
-                submitBtn.textContent = 'Message Sent!';
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.style.background = 'var(--primary-gradient)';
-                    this.reset();
-                }, 2000);
-            }, 1500);
-        });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         // Card flip functionality
         function flipCard(button) {
@@ -1505,22 +1586,14 @@
                 animation: cursorFade 1s ease-out forwards;
             `;
             document.body.appendChild(cursor);
-            
             setTimeout(() => cursor.remove(), 1000);
         });
 
-        // Add cursor fade animation
         const style = document.createElement('style');
         style.textContent = `
             @keyframes cursorFade {
-                0% {
-                    opacity: 1;
-                    transform: scale(1);
-                }
-                100% {
-                    opacity: 0;
-                    transform: scale(3);
-                }
+                0% { opacity: 1; transform: scale(1); }
+                100% { opacity: 0; transform: scale(3); }
             }
         `;
         document.head.appendChild(style);
@@ -1528,20 +1601,11 @@
         // Parallax effect for floating elements
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
-            const floatingElements = document.querySelectorAll('.floating-element');
-            
-            floatingElements.forEach((element, index) => {
+            document.querySelectorAll('.floating-element').forEach((element, index) => {
                 const speed = (index + 1) * 0.5;
                 element.style.transform = `translateY(${scrollY * speed}px) rotate(${scrollY * 0.1}deg)`;
             });
         });
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
