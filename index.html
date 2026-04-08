@@ -1205,6 +1205,68 @@
     <section id="works" class="fade-in">
         <h2 class="section-title">Works</h2>
         <div class="works-grid">
+            <!-- Card with flip -->
+            <div class="work-item">
+                <div class="work-card">
+                    <div class="work-front">
+                        <div class="work-thumbnail">
+                            <img src="./images/voe.png" alt="Voe The App"/>
+                        </div>
+                        <div class="work-content">
+                            <div class="work-header">
+                                <h3>Charleston’s first boutique app.</h3>
+                                <button class="demo-link" onclick="flipCard(this)">See demo</button>
+                            </div>
+                            <p>Developed and enhanced key features for a boutique discovery platform focused on connecting users with their favorite fashion stores.</p>
+<p>Key contributions:</p>
+<p>Implemented advanced map functionality with fully customized pins to improve store discovery and user interaction</p>
+<p>Built SSO (Single Sign-On) integration to streamline user authentication and onboarding</p>
+<p>Developed daisy-chain filtering logic to enable dynamic, multi-condition filtering across listings</p>
+<p>Optimized workflows and data structure to support scalability and smooth UX across the platform</p>
+                        </div>
+                    </div>
+                    <div class="work-back">
+                        <div class="work-video">
+                            <iframe src="https://www.loom.com/embed/a989ee4f72a64918b1c386bef9f8113a?sid=b9fcf6ea-a812-405e-8cfa-069a84eb3466" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        </div>
+                        <button class="back-button" onclick="flipCard(this)">← Back to details</button>
+                    </div>
+                    <!-- Ghost spacer keeps card height correct -->
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header">
+                                <h3>Charleston’s first boutique app.</h3>
+                            </div>
+                            <p>Developed and enhanced key features for a boutique discovery platform focused on connecting users with their favorite fashion stores.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NDA cards (no flip) -->
+            <div class="work-item">
+                <div class="work-card">
+                    <div class="work-front">
+                        <div class="work-thumbnail">
+                            <img src="./images/kpBlurry.PNG" alt="NDA thumbnail" />
+                        </div>
+                        <div class="work-content">
+                            <div class="work-header">
+                                <h3>Children's Learning Portal (Under NDA)</h3>
+                            </div>
+                            <p>Interactive educational platform with games, e-books, videos, worksheets, and parental controls.</p>
+                        </div>
+                    </div>
+                    <div class="work-card-spacer" aria-hidden="true">
+                        <div class="work-thumbnail"></div>
+                        <div class="work-content">
+                            <div class="work-header"><h3>Children's Learning Portal (Under NDA)</h3></div>
+                            <p>Interactive educational platform with games, e-books, videos, worksheets, and parental controls.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Card with flip -->
             <div class="work-item">
@@ -1470,6 +1532,12 @@
     <section id="education" class="fade-in">
         <h2 class="section-title">Education & Certifications</h2>
         <div class="education-grid">
+             <div class="education-card">
+                <div class="edu-icon">📜</div>
+                <h3>Bubble Developer Certification</h3>
+                <a href="https://bubble.io/certificate/1757277934653x374617882021236200>Issued by Bubble</a>
+                <p>Expert Level</p>
+            </div>
             <div class="education-card">
                 <div class="edu-icon">🏛️</div>
                 <h3>ULBRA University</h3>
