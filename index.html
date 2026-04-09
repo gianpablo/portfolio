@@ -198,9 +198,12 @@
 
         /* Flip wrapper — height driven by ghost spacer */
         .work-card {
-            position:relative; width:100%;
-            transform-style:preserve-3d; transition:transform .6s ease;
-        }
+    position: relative;
+    width: 100%;
+    min-height: 500px;
+    transform-style: preserve-3d;
+    transition: transform .6s ease;
+}
         .work-card.flipped { transform:rotateY(180deg); }
 
         /* Both faces */
